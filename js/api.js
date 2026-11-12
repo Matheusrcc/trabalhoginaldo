@@ -5,10 +5,9 @@
 
 // ===== CONFIGURAÇÃO (altere somente aqui) =====
 const API_CONFIG = {
-  BASE_URL: "http://127.0.0.1:8000", // URL do back-end (FastAPI/Flask)
-  TIMEOUT_MS: 30000,                  // força bruta pode demorar
+  BASE_URL: "https://trabalhoginaldo.onrender.com",
+  TIMEOUT_MS: 30000,
 };
-
 class ApiError extends Error {
   constructor(message, status = 0) { super(message); this.status = status; }
 }
