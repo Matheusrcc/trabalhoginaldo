@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Análise e Comparação de Algoritmos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio">Análise de Algoritmos</a>
+    <nav class="nav" aria-label="Navegação principal">
+      <a href="#inicio" data-nav="inicio">Início</a>
+      <a href="#troco" data-nav="troco">Problema do Troco</a>
+      <a href="#mochila" data-nav="mochila">Mochila 0/1</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- INÍCIO -->
+    <section id="inicio" class="view">
+      <h1>Análise e Comparação de Algoritmos</h1>
+      <p class="lead">Compare força bruta, algoritmo guloso e programação dinâmica em dois problemas clássicos. Os cálculos são executados pelo back-end em Python; esta interface envia os dados e mostra os resultados.</p>
+      <div class="grid two">
+        <a class="card link-card" href="#troco">
+          <h2>Problema do Troco</h2>
+          <p>Calcule o menor número de moedas para um valor e veja quando o guloso não encontra o ótimo.</p>
+        </a>
+        <a class="card link-card" href="#mochila">
+          <h2>Problema da Mochila 0/1</h2>
+          <p>Escolha os itens de maior valor sem ultrapassar a capacidade da mochila.</p>
+        </a>
+      </div>
+      <p class="api-status" id="api-status" role="status">Verificando conexão com o back-end…</p>
+    </section>
+
+    <!-- TROCO -->
+    <section id="troco" class="view" hidden>
+      <h1>Problema do Troco</h1>
+      <p class="lead">Informe o valor e as moedas (em centavos). Os três algoritmos rodam no back-end e são comparados abaixo.</p>
+
+      <form id="form-troco" class="card form" novalidate>
+        <div class="field">
+          <label for="troco-valor">Valor do troco (centavos)</label>
+          <input id="troco-valor" type="number" min="1" step="1" value="289" required>
+        </div>
+        <div class="field">
+          <label for="troco-moedas">Moedas disponíveis (separadas por vírgula)</label>
+          <input id="troco-moedas" type="text" value="100, 50, 25, 10, 5, 1" required>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="btn-troco">Calcular troco</button>
+          <button type="button" class="btn" id="btn-troco-exemplo">Carregar exemplo onde o guloso falha</button>
+        </div>
+        <p class="hint">O exemplo usa as moedas 4, 3 e 1 com valor 6.</p>
+        <p class="msg error" id="troco-erro" role="alert" hidden></p>
+      </form>
+
+      <div id="troco-loading" class="loading" hidden>Calculando no back-end…</div>
+      <div id="troco-resultado" hidden>
+        <div id="troco-aviso" class="notice" hidden></div>
+        <div class="grid three" id="troco-cards"></div>
+        <div class="card table-wrap">
+          <table>
+            <caption>Comparativo</caption>
+            <thead><tr><th>Algoritmo</th><th>Moedas usadas</th><th>Quantidade</th><th>Tempo</th></tr></thead>
+            <tbody id="troco-tabela"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOCHILA -->
+    <section id="mochila" class="view" hidden>
+      <h1>Problema da Mochila 0/1</h1>
+      <p class="lead">Cada item pode ser escolhido no máximo uma vez. A seleção ótima é calculada por programação dinâmica no back-end.</p>
+
+      <div class="card form">
+        <div class="field narrow">
+          <label for="mochila-cap">Capacidade máxima</label>
+          <input id="mochila-cap" type="number" min="1" step="1" value="10">
+        </div>
+      </div>
+
+      <form id="form-item" class="card form" novalidate>
+        <h2>Adicionar item</h2>
+        <div class="row">
+          <div class="field grow"><label for="item-nome">Nome</label><input id="item-nome" type="text" maxlength="40"></div>
+          <div class="field narrow"><label for="item-peso">Peso</label><input id="item-peso" type="number" min="1" step="1"></div>
+          <div class="field narrow"><label for="item-valor">Valor</label><input id="item-valor" type="number" min="0" step="1"></div>
+          <button type="submit" class="btn">Adicionar</button>
+        </div>
+        <p class="msg error" id="item-erro" role="alert" hidden></p>
+      </form>
+
+      <div class="card table-wrap">
+        <div class="card-head">
+          <h2>Itens (<span id="qtd-itens">0</span>)</h2>
+          <button type="button" class="btn small" id="btn-mochila-exemplo">Carregar exemplo</button>
+        </div>
+        <table>
+          <thead><tr><th>Nome</th><th>Peso</th><th>Valor</th><th><span class="sr">Ações</span></th></tr></thead>
+          <tbody id="lista-itens"></tbody>
+        </table>
+        <p class="empty" id="itens-vazio">Nenhum item ainda. Adicione itens acima.</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="btn-mochila">Executar programação dinâmica</button>
+        <button type="button" class="btn" id="btn-limpar">Remover todos os itens</button>
+      </div>
+      <p class="msg error" id="mochila-erro" role="alert" hidden></p>
+      <div id="mochila-loading" class="loading" hidden>Calculando no back-end…</div>
+
+      <div id="mochila-resultado" hidden>
+        <div class="grid three" id="mochila-indicadores"></div>
+        <div class="card">
+          <div class="bar" aria-hidden="true"><span id="mochila-barra"></span></div>
+          <p class="hint" id="mochila-barra-texto"></p>
+        </div>
+        <div class="grid two">
+          <div class="card"><h2>Selecionados</h2><ul class="items" id="lista-sel"></ul></div>
+          <div class="card"><h2>Ficaram de fora</h2><ul class="items out" id="lista-fora"></ul></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Projeto acadêmico · Front-end em HTML, CSS e JavaScript · Algoritmos executados em Python</footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
